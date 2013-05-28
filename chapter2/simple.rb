@@ -151,6 +151,29 @@ class Assign < Expression
   end
 end
 
+class If < Expression
+  def initialize(condition, consequence, alternative)
+    @condition = condition
+    @consequence = consequence
+    @alternative = alternative
+  end
+
+  attr_reader :condition, :consequence, :alternative
+
+  def to_s
+    "if ( #{condition} ) { #{consequence} } else { #{alternative} }"
+  end
+
+  def reduce
+    case condition.in_environment(@environment).reduce
+    when Boolean.new(true)
+      consequence.in_environment(@environment).reduce
+    else
+      alternative.in_environment(@environment).reduce
+    end
+  end
+end
+
 class Machine < Struct.new(:expression, :environment)
   def run
     expression.in_environment(environment).reduce

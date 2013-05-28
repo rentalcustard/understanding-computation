@@ -52,5 +52,26 @@ describe "the simple language" do
         environment
       ).run.environment.should eq({x: Number.new(4), y: Number.new(4)})
     end
+
+    it "allows conditionals" do
+       Machine.new(
+         If.new(
+           Variable.new(:x),
+           Assign.new(:y, Number.new(1)),
+           Assign.new(:y, Number.new(2))
+           ),
+         { x: Boolean.new(true) }
+       ).run.environment[:y].should eq(Number.new(1))
+
+
+       Machine.new(
+         If.new(
+           Variable.new(:x),
+           Assign.new(:y, Number.new(1)),
+           Assign.new(:y, Number.new(2))
+           ),
+         { x: Boolean.new(false) }
+       ).run.environment[:y].should eq(Number.new(2))
+    end
   end
 end
