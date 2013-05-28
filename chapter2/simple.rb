@@ -123,6 +123,6 @@ end
 
 class Machine < Struct.new(:expression, :environment)
   def run
-    puts expression.in_environment(environment).reduce
+    expression.in_environment(environment).reduce
   end
 end
