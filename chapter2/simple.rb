@@ -1,3 +1,8 @@
+#This was really interesting. I started reading chapter 2, and saw all the
+#calls to 'reducible?' and switching on that. Since I'm allergic to query
+#methods and 'if', I decided to avoid them and prefer polymorphism. Without
+#even intending it, this led to an implementation of a big-step semantics.
+
 class Expression
   def in_environment(environment)
     @environment = environment
