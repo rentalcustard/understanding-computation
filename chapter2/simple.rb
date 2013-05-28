@@ -9,6 +9,18 @@ class Expression
   def inspect
     "<<#{self}>>"
   end
+
+  def +(other)
+    reduce + other
+  end
+
+  def *(other)
+    reduce * other
+  end
+
+  def <(other)
+    reduce < other
+  end
 end
 
 class ValueExpression < Expression
@@ -37,18 +49,6 @@ class BinaryExpression < Expression
 
   def reduce
     perform_operation(left.in_environment(@environment), right.in_environment(@environment))
-  end
-
-  def +(other)
-    reduce + other
-  end
-
-  def *(other)
-    reduce * other
-  end
-
-  def <(other)
-    reduce < other
   end
 end
 
@@ -112,18 +112,6 @@ class Variable < Expression
 
   def reduce
     @environment[name]
-  end
-
-  def +(other)
-    reduce + other
-  end
-
-  def *(other)
-    reduce * other
-  end
-
-  def <(other)
-    reduce < other
   end
 end
 
