@@ -73,5 +73,39 @@ describe "the simple language" do
          { x: Boolean.new(false) }
        ).run.environment[:y].should eq(Number.new(2))
     end
+
+    it "allows sequences of expressions" do
+      Machine.new(
+        Sequence.new(
+          Assign.new(:x, Add.new(Number.new(1), Number.new(1))),
+          Assign.new(:y, Add.new(Variable.new(:x), Number.new(3)))
+          ),
+          {}
+      ).run.environment.should eq({x: Number.new(2), y: Number.new(5)})
+    end
+
+
+    it "allows nested sequences" do
+      Machine.new(
+        Sequence.new(
+          Sequence.new(
+            Assign.new(:x, Add.new(Number.new(1), Number.new(1))),
+            Assign.new(:y, Add.new(Variable.new(:x), Number.new(3)))
+            ),
+            Add.new(Variable.new(:x), Variable.new(:y))
+        ),
+        {}
+      ).run.should eq(Number.new(7))
+    end
+
+    it "allows looping" do
+      Machine.new(
+        While.new(
+            LessThan.new(Variable.new(:x), Number.new(5)),
+            Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3)))
+          ),
+          { x: Number.new(1) }
+      ).run.environment.should eq({x: Number.new(9)})
+    end
   end
 end

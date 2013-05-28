@@ -121,6 +121,10 @@ class Variable < Expression
   def *(other)
     reduce * other
   end
+
+  def <(other)
+    reduce < other
+  end
 end
 
 class DoNothing < Expression
@@ -171,6 +175,40 @@ class If < Expression
     else
       alternative.in_environment(@environment).reduce
     end
+  end
+end
+
+class Sequence < Expression
+  def initialize(first, second)
+    @first = first
+    @second = second
+  end
+
+  attr_reader :first, :second
+
+  def to_s
+    "#{first}; #{second}"
+  end
+
+  def reduce
+    environment = first.in_environment(@environment).reduce.environment
+    second.in_environment(environment).reduce
+  end
+end
+
+class While < Expression
+  def initialize(condition, body)
+    @condition = condition
+    @body = body
+  end
+  attr_reader :condition, :body
+
+  def to_s
+    "while (#{condition}) { #{body} }"
+  end
+
+  def reduce
+    If.new(condition, Sequence.new(body, self), DoNothing.new).in_environment(@environment).reduce
   end
 end
 
