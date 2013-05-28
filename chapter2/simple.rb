@@ -62,7 +62,7 @@ class Number < ValueExpression
   end
 
   def <(other)
-    value < other.reduce.value
+    Boolean.new(value < other.reduce.value)
   end
 end
 
@@ -95,7 +95,7 @@ class LessThan < BinaryExpression
   end
 
   def perform_operation(left, right)
-    Boolean.new(left < right)
+    left < right
   end
 end
 
