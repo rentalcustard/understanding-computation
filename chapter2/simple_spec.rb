@@ -45,5 +45,12 @@ describe "the simple language" do
         environment
       ).run.should eq(Number.new(7))
     end
+
+    it "allows assignment" do
+      Machine.new(
+        Assign.new(:x, Add.new(Variable.new(:x), Number.new(1))),
+        environment
+      ).run.environment.should eq({x: Number.new(4), y: Number.new(4)})
+    end
   end
 end

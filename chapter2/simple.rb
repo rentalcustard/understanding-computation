@@ -4,6 +4,8 @@ class Expression
     self
   end
 
+  attr_reader :environment
+
   def inspect
     "<<#{self}>>"
   end
@@ -118,6 +120,34 @@ class Variable < Expression
 
   def *(other)
     reduce * other
+  end
+end
+
+class DoNothing < Expression
+  def to_s
+    'do-nothing'
+  end
+
+  def reduce
+    self
+  end
+end
+
+class Assign < Expression
+  def initialize(name, expression)
+    @name = name
+    @expression = expression
+  end
+
+  attr_reader :name, :expression
+
+  def to_s
+    "#{name} := #{expression}"
+  end
+
+  def reduce
+    @environment[name] = expression.in_environment(@environment).reduce
+    DoNothing.new.in_environment(@environment)
   end
 end
 
