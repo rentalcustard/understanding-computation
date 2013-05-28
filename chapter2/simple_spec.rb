@@ -92,7 +92,7 @@ describe "the simple language" do
             Assign.new(:x, Add.new(Number.new(1), Number.new(1))),
             Assign.new(:y, Add.new(Variable.new(:x), Number.new(3)))
             ),
-            Add.new(Variable.new(:x), Variable.new(:y))
+          Add.new(Variable.new(:x), Variable.new(:y))
         ),
         {}
       ).run.should eq(Number.new(7))
