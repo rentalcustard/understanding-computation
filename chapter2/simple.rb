@@ -3,6 +3,9 @@
 #methods and 'if', I decided to avoid them and prefer polymorphism. Without
 #even intending it, this led to an implementation of a big-step semantics.
 
+#There are problems with this code. I'm not going to fix them, this is just
+#a record-in-code of my thoughts as I read chapter 2. You should show me yours.
+
 class Expression
   def in_environment(environment)
     @environment = environment
